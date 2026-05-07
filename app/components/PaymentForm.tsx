@@ -52,7 +52,14 @@ export default function PaymentForm() {
       amount: Number(amount),
       currency
     });
-    setResponseMessage(response.message);
+    setResponseMessage('message' in response ? response.message : '');
+    if ('success' in response && response.success) {
+      setCardholderName('');
+      setCardNumber('');
+      setExpiryDate('');
+      setCvv('');
+      setAmount('');
+    }
   };
 
   return (
@@ -74,11 +81,12 @@ export default function PaymentForm() {
               setCardholderName(e.target.value)
               updateError('cardholderName', validateCardHolderName(e.target.value))
             }}
-            className="w-full rounded-lg border p-3"
+            className="w-full rounded-lg border p-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/20"
             disabled={status === "processing"}
+            aria-describedby="cardholder-error"
           />
           {errors.cardholderName && (
-            <p className="mt-1 text-sm text-red-500">{errors.cardholderName}</p>
+            <p id="cardholder-error" className="mt-1 text-sm text-red-500">{errors.cardholderName}</p>
           )}
         </div>
         <div>
@@ -92,12 +100,14 @@ export default function PaymentForm() {
               setCardNumber(formatted)
               updateError('cardNumber', validateCardNumber(formatted))
             }}
-            className="w-full rounded-lg border p-3" maxLength={19}
+            className="w-full rounded-lg border p-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/20"
+            maxLength={19}
             disabled={status === "processing"}
+            aria-describedby="cardnumber-error"
           />
           <p className="mt-1 text-sm">Card Type: {cardType}</p>
           {errors.cardNumber && (
-            <p className="mt-1 text-sm text-red-500">{errors.cardNumber}</p>
+            <p id="cardnumber-error" className="mt-1 text-sm text-red-500">{errors.cardNumber}</p>
           )}
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -113,12 +123,13 @@ export default function PaymentForm() {
                 setExpiryDate(formatted)
                 updateError('expiryDate', validateExpiryDate(formatted))
               }}
-              className="w-full rounded-lg border p-3"
+              className="w-full rounded-lg border p-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/20"
               maxLength={5}
               disabled={status === "processing"}
+              aria-describedby="expiry-error"
             />
             {errors.expiryDate && (
-              <p className="mt-1 text-sm text-red-500">{errors.expiryDate}</p>
+              <p id="expiry-error" className="mt-1 text-sm text-red-500">{errors.expiryDate}</p>
             )}
           </div>
           <div>
@@ -132,12 +143,13 @@ export default function PaymentForm() {
                 setCvv(cleaned);
                 updateError('cvv', validateCVV(cleaned, cardType))
               }}
-              className="w-full rounded-lg border p-3"
+              className="w-full rounded-lg border p-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/20"
               maxLength={cardType === 'amex' ? 4 : 3}
               disabled={status === "processing"}
+              aria-describedby="cvv-error"
             />
             {errors.cvv && (
-              <p className="mt-1 text-sm text-red-500">{errors.cvv}</p>
+              <p id="cvv-error" className="mt-1 text-sm text-red-500">{errors.cvv}</p>
             )}
           </div>
         </div>
@@ -152,11 +164,12 @@ export default function PaymentForm() {
                 setAmount(e.target.value);
                 updateError('amount', validateAmount(Number(e.target.value)))
               }}
-              className="w-full rounded-lg border p-3"
+              className="w-full rounded-lg border p-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/20"
               disabled={status === "processing"}
+              aria-describedby="amount-error"
             />
             {errors.amount && (
-              <p className="mt-1 text-sm text-red-500">{errors.amount}</p>
+              <p id="amount-error" className="mt-1 text-sm text-red-500">{errors.amount}</p>
             )}
           </div>
           <div>
@@ -165,7 +178,7 @@ export default function PaymentForm() {
               id="currency"
               value={currency}
               onChange={(e) => setCurrency(e.target.value as CurrencyType)}
-              className="w-full rounded-lg border p-3"
+              className="w-full rounded-lg border p-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/20"
               disabled={status === "processing"}
             >
               <option value={'INR'}>INR</option>
@@ -176,29 +189,32 @@ export default function PaymentForm() {
         <button
           type="submit"
           disabled={!isFormValid || status === "processing"}
-          className="w-full rounded-lg bg-black p-3 text-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full rounded-lg bg-black p-3 text-white disabled:cursor-not-allowed disabled:opacity-50 outline-none transition focus:border-black focus:ring-2 focus:ring-black/20"
         >
           Pay Now
         </button>
         {status !== "idle" && (
           <div className="rounded-lg border p-4">
             {status === "processing" && (
-              <p className="text-blue-600">Processing payment...</p>
+              <div className="flex items-center gap-2 text-blue-600">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                <p>Processing payment...</p>
+              </div>
             )}
             {status === "success" && (
-              <div>
+              <div aria-live="polite" className="rounded-lg bg-green-50 p-4">
                 <p className="font-medium text-green-600">Payment Successful</p>
                 <p className="mt-1 text-sm">{responseMessage}</p>
               </div>
             )}
             {status === "failed" && (
-              <div>
+              <div aria-live="polite" className="rounded-lg bg-red-50 p-4">
                 <p className="font-medium text-red-600">Payment Failed</p>
                 <p className="mt-1 text-sm">{responseMessage}</p>
               </div>
             )}
             {status === "timeout" && (
-              <div>
+              <div aria-live="polite" className="rounded-lg bg-orange-50 p-4">
                 <p className="font-medium text-orange-600">Payment Timed Out</p>
                 <p className="mt-1 text-sm">{responseMessage}</p>
               </div>

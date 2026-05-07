@@ -23,7 +23,7 @@ export default function CardPreview({
         <p className="text-sm uppercase tracking-widest text-gray-300">Payment Card</p>
         <div className="rounded-md bg-white/20 px-3 py-1 text-sm font-semibold">{cardLabel[cardType]}</div>
       </div>
-      <div className="mb-8 text-2xl tracking-[0.2em]">
+      <div className="mb-8 text-lg sm:text-2xl tracking-[0.2em]">
         {cardNumber || ".... .... .... ...."}
       </div>
       <div className="flex items-end justify-between">
