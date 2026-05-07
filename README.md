@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Payment Gateway UI
 
-## Getting Started
+A realistic payment gateway simulation built using Next.js App Router, TypeScript, Zustand, and Tailwind CSS.
 
-First, run the development server:
+The application simulates a real-world payment flow including:
+- payment processing
+- success and failure handling
+- timeout handling
+- retry logic
+- transaction persistence
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Real-time payment form validation
+- Card number auto-formatting
+- Visa / Mastercard / Amex detection
+- Live payment card preview
+- Payment lifecycle handling
+- Mock payment gateway API
+- Timeout handling using AbortController
+- Retry support with max 3 attempts
+- Persistent transaction history using localStorage
+- Responsive UI for mobile and desktop
+- Accessibility support with proper labels and aria attributes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 15 (App Router)
+- TypeScript
+- Zustand
+- Tailwind CSS
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Setup Instructions
 
-## Deploy on Vercel
+Clone the repository: git clone https://github.com/BirundhaProjects/payment-gateway-ui.git
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Move into project folder: cd payment-gateway-ui
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Install dependencies: npm install
+
+Run development server: npm run dev
+
+Open in browser: http://localhost:3000
+
+
+## Folder Structure
+
+src/
+├── app/
+│ ├── api/
+│ │ └── pay/
+│ │ └── route.ts
+│ └── page.tsx
+│
+├── components/
+│ ├── CardPreview.tsx
+│ ├── PaymentForm.tsx
+│ └── TransactionHistory.tsx
+│
+├── hooks/
+│ └── usePayment.ts
+│
+├── store/
+│ └── paymentStore.ts
+│
+├── types/
+│ └── payment.ts
+│
+└── utils/
+    ├── cardUtils.ts
+    ├── formatters.ts
+    └── validators.ts
+
+
+## Payment Lifecycle
+
+The application supports the following payment states:
+
+- Idle
+- Processing
+- Success
+- Failed
+- Timeout
+
+
+## Mock API Behaviour
+
+The `/api/pay` route simulates realistic payment gateway behavior:
+
+- ~60% Success response
+- ~25% Failure response
+- ~15% Delayed timeout response
+
+Frontend timeout handling is implemented using `AbortController` with a 6-second timeout limit.
+
+
+## Assumptions
+
+- Payment processing is fully simulated using a mock API route
+- No third-party payment SDKs were used
+- Transaction history is stored locally using browser localStorage
+- Retry attempts are limited to 3 per transaction
+- Same transaction ID is reused for retries to maintain idempotency
+
+
+## Accessibility
+
+The application includes:
+- visible form labels
+- keyboard-friendly focus states
+- aria-describedby support for validation messages
+- accessible status updates using aria-live
+
+
+## Future Improvements
+
+- Add unit and integration testing
+- Add dark mode support
+- Improve card validation using Luhn algorithm
+- Add transaction filtering and search
+- Add animations and smoother transitions
+- Persist transactions using a database
+- Add authentication and user-specific payment history
+
+
+## Deployment
+
+The application can be deployed easily using Vercel.
+
+Live Demo: https://your-vercel-url.vercel.app
+
+
+## Build Check
+
+Run production build before submission: npm run build
+
+## Author
+
+Developed as part of a frontend payment gateway assignment using Next.js and TypeScript.
