@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { usePaymentStore } from "../store/paymentStore";
 import { PaymentPayload, Transaction } from "../types/payment";
 

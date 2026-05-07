@@ -6,7 +6,7 @@ export type CurrencyType = | "INR" | "USD";
 
 export interface PaymentPayload {
   transactionId: string;
-  cardHolderName: string;
+  cardholderName: string;
   cardNumber: string;
   expiryDate: string;
   cvv: string;
@@ -30,7 +30,7 @@ export interface Transaction {
 }
 
 export interface PaymentFormErrors {
-  cardHolderName?: string;
+  cardholderName?: string;
   cardNumber?: string;
   expiryDate?: string;
   cvv?: string;
