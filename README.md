@@ -130,7 +130,7 @@ The application includes:
 
 The application can be deployed easily using Vercel.
 
-Live Demo: https://your-vercel-url.vercel.app
+Live Demo: https://payment-gateway-ui-blue.vercel.app/
 
 
 ## Build Check
